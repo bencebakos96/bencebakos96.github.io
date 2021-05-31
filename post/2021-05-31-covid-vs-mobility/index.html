@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academia 4.3.1">
+  <meta name="generator" content="Hugo 0.82.1" />
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Bence E. Bakos">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Packageslibrary(tidyverse)library(gtable)library(grid)DataDocumentation for data:
+Google Mobility DataOur World in Data COVID-19 dataset# Downloading mobility data from Googledownload.file(url = &quot;https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip&quot;,destfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;)# Unzipping relevant filesunzip(zipfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;,files = &quot;2020_HU_Region_Mobility_Report.csv&quot;,exdir = &quot;Data&quot;)unzip(zipfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;,files = &quot;2021_HU_Region_Mobility_Report.csv&quot;,exdir = &quot;Data&quot;)# Importing relevant filesmobility_hu_20 &lt;- read_csv(&quot;Data/2020_HU_Region_Mobility_Report.csv&quot;)mobility_hu_21 &lt;- read_csv(&quot;Data/2021_HU_Region_Mobility_Report.csv&quot;)# Downloading and importing COVID-19 data from Our World in Dataowd_covid_HU &lt;-read_csv(&quot;https://covid.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#795548">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Open+Sans|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academia.min.cff6145fe2dabd10bd75fe249f12263e.css">
+
+  
+
+  
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Bence E. Bakos">
+  <meta property="og:url" content="http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/">
+  <meta property="og:title" content="Hungarian COVID-19 deaths vs. Google&#39;s mobility data | Bence E. Bakos">
+  <meta property="og:description" content="Packageslibrary(tidyverse)library(gtable)library(grid)DataDocumentation for data:
+Google Mobility DataOur World in Data COVID-19 dataset# Downloading mobility data from Googledownload.file(url = &quot;https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip&quot;,destfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;)# Unzipping relevant filesunzip(zipfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;,files = &quot;2020_HU_Region_Mobility_Report.csv&quot;,exdir = &quot;Data&quot;)unzip(zipfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;,files = &quot;2021_HU_Region_Mobility_Report.csv&quot;,exdir = &quot;Data&quot;)# Importing relevant filesmobility_hu_20 &lt;- read_csv(&quot;Data/2020_HU_Region_Mobility_Report.csv&quot;)mobility_hu_21 &lt;- read_csv(&quot;Data/2021_HU_Region_Mobility_Report.csv&quot;)# Downloading and importing COVID-19 data from Our World in Dataowd_covid_HU &lt;-read_csv(&quot;https://covid."><meta property="og:image" content="http://bencebakos96.github.io/img/icon-192.png">
+  <meta property="twitter:image" content="http://bencebakos96.github.io/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2021-05-31T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2021-05-31T00:00:00&#43;00:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Hungarian COVID-19 deaths vs. Google&#39;s mobility data | Bence E. Bakos</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Bence E. Bakos</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"><span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article py-5" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+    
+    
+    <div class="article-container py-3">
+      <h1 itemprop="name">Hungarian COVID-19 deaths vs. Google&#39;s mobility data</h1>
+
+      
+
+      
+      
+
+
+
+<meta content="2021-05-31 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2021-05-31 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>May 31, 2021</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/&amp;text=Hungarian%20COVID-19%20deaths%20vs.%20Google&amp;#39;s%20mobility%20data" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/&amp;t=Hungarian%20COVID-19%20deaths%20vs.%20Google&amp;#39;s%20mobility%20data" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Hungarian%20COVID-19%20deaths%20vs.%20Google&amp;#39;s%20mobility%20data&amp;body=http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/&amp;title=Hungarian%20COVID-19%20deaths%20vs.%20Google&amp;#39;s%20mobility%20data" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Hungarian%20COVID-19%20deaths%20vs.%20Google&amp;#39;s%20mobility%20data%20http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/&amp;title=Hungarian%20COVID-19%20deaths%20vs.%20Google&amp;#39;s%20mobility%20data" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+      
+    </div>
+  </div>
+</div>
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+<script src="http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="packages" class="section level1">
+<h1>Packages</h1>
+<pre class="r"><code>library(tidyverse)
+library(gtable)
+library(grid)</code></pre>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>Documentation for data:</p>
+<ul>
+<li><a href="https://www.google.com/covid19/mobility/data_documentation.html">Google Mobility Data</a></li>
+<li><a href="https://github.com/owid/covid-19-data/tree/master/public/data">Our World in Data COVID-19 dataset</a></li>
+</ul>
+<pre class="r"><code># Downloading mobility data from Google
+download.file(url = &quot;https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip&quot;,
+              destfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;)
+
+# Unzipping relevant files
+unzip(zipfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;,
+      files = &quot;2020_HU_Region_Mobility_Report.csv&quot;,
+      exdir = &quot;Data&quot;)
+
+unzip(zipfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;,
+      files = &quot;2021_HU_Region_Mobility_Report.csv&quot;,
+      exdir = &quot;Data&quot;)
+
+# Importing relevant files
+mobility_hu_20 &lt;- read_csv(&quot;Data/2020_HU_Region_Mobility_Report.csv&quot;)
+mobility_hu_21 &lt;- read_csv(&quot;Data/2021_HU_Region_Mobility_Report.csv&quot;)
+
+# Downloading and importing COVID-19 data from Our World in Data
+owd_covid_HU &lt;-
+  read_csv(&quot;https://covid.ourworldindata.org/data/owid-covid-data.csv&quot;) %&gt;% 
+  filter(iso_code == &quot;HUN&quot;)</code></pre>
+</div>
+<div id="data-wrangling" class="section level1">
+<h1>Data Wrangling</h1>
+<p>Google’s mobility data is divided into separate files by year. Below I join the dataframes and create a separate DF for Hungary overall, and a DF with all subregions. Mobility data and COVID-19 data also need to be joined.</p>
+<pre class="r"><code># Joining dataframes
+mobility_hu &lt;- bind_rows(mobility_hu_20, mobility_hu_21)
+
+# New dataframe for Hungary overall
+mobility_hu_OVR &lt;-
+  mobility_hu %&gt;% 
+  filter(is.na(sub_region_1) == TRUE) %&gt;% 
+  select(date:last_col())
+
+# New dataframe for subregions of Hungary
+mobility_hu_sub &lt;-
+  mobility_hu %&gt;% 
+  filter(is.na(sub_region_1) == FALSE) %&gt;% 
+  select(c(sub_region_1, iso_3166_2_code, date:last_col()))
+
+# Selecting relevant variables
+owd_covid_HU &lt;-
+  owd_covid_HU %&gt;% 
+  select(c(date, new_cases:new_deaths_smoothed_per_million,
+           people_vaccinated:new_vaccinations_smoothed,
+           people_fully_vaccinated_per_hundred:new_vaccinations_smoothed_per_million))
+
+# Joining mobility and COVID-19 data
+mobility_covid &lt;- 
+  mobility_hu_OVR %&gt;% 
+  left_join(owd_covid_HU, by = &quot;date&quot;)
+
+# Joining mobility and COVID-19 data for subregions
+mobility_covid_subregions &lt;-
+  mobility_hu_sub %&gt;% 
+  left_join(owd_covid_HU, by = &quot;date&quot;)</code></pre>
+</div>
+<div id="data-visualization" class="section level1">
+<h1>Data visualization</h1>
+<pre class="r"><code>p1 &lt;-
+  ggplot(mobility_covid, aes(date, retail_and_recreation_percent_change_from_baseline))+
+    geom_line(color = &quot;red&quot;)+
+    geom_smooth(se = FALSE, color = &quot;red&quot;)+
+    ylab(&quot;recreation change (%)&quot;)
+
+p2 &lt;-
+  ggplot(mobility_covid, aes(date, new_deaths_smoothed))+
+    geom_line(color = &quot;blue&quot;)+
+    ylab(&quot;new COVID death (7 day av.)&quot;)
+
+g1 &lt;- ggplotGrob(p1)
+g2 &lt;- ggplotGrob(p2)
+g &lt;- rbind(g1, g2) # stack the two plots
+g$widths &lt;- unit.pmax(g1$widths, g2$widths) # use the largest widths
+grid.newpage()
+grid.draw(g)</code></pre>
+<p><img src="http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz-1.png" width="672" /></p>
+<pre class="r"><code>p3 &lt;-
+  ggplot(mobility_covid, aes(date, parks_percent_change_from_baseline))+
+    geom_line(color = &quot;green&quot;)+
+    ylab(&quot;parks change (%)&quot;)
+
+g1 &lt;- ggplotGrob(p3)
+g2 &lt;- ggplotGrob(p2)
+g &lt;- rbind(g1, g2) # stack the two plots
+g$widths &lt;- unit.pmax(g1$widths, g2$widths) # use the largest widths
+grid.newpage()
+grid.draw(g)</code></pre>
+<p><img src="http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz-2.png" width="672" /></p>
+<pre class="r"><code>p4 &lt;-
+  ggplot(mobility_covid, aes(date, residential_percent_change_from_baseline))+
+    geom_line(color = &quot;brown&quot;)+
+  geom_smooth(se = FALSE, color = &quot;black&quot;)+
+    ylab(&quot;residental change (%)&quot;)
+
+g1 &lt;- ggplotGrob(p4)
+g2 &lt;- ggplotGrob(p2)
+g &lt;- rbind(g1, g2) # stack the two plots
+g$widths &lt;- unit.pmax(g1$widths, g2$widths) # use the largest widths
+grid.newpage()
+grid.draw(g)</code></pre>
+<p><img src="http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz-3.png" width="672" /></p>
+</div>
+
+    </div>
+
+    
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="http://bencebakos96.github.io/">Bence E. Bakos</a></h5>
+      <h6 class="card-subtitle">Cognitive Psychology Student</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+          <li>
+            <a itemprop="sameAs" href="mailto:bencebakos96@gmail.com" >
+              <i class="fas fa-envelope"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://twitter.com/bencebakos96" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://scholar.google.hu/citations?user=vxaTPpsAAAAJ&amp;hl" target="_blank" rel="noopener">
+              <i class="ai ai-google-scholar"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/bencebakos96" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+      <script async defer src="//maps.googleapis.com/maps/api/js?key=AIzaSyDOeGUExDCdddPptGolSQ3k5n4rzLz2QB0"></script>
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.25/gmaps.min.js" integrity="sha256-7vjlAeb8OaTrCXZkCNun9djzuB2owUsaO72kXaFDBJs=" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/js/academia.min.e40e230d9b3dfeac86994156b6388764.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 mb-4 mb-md-0">
+        
+        <p class="mb-0">
+          Copyright © 2021 &middot; 
+          Powered by
+          <a href="https://gethugothemes.com" target="_blank" rel="noopener">Gethugothemes</a>
+        </p>
+      </div>
+      <div class="col-md-6">
+        <ul class="list-inline network-icon text-right mb-0">
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://twitter.com/Twitter" target="_blank" rel="noopener" title="DM Me"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="skype:echo123?call"  title="Skype Me"><i class="fab fa-skype" aria-hidden="true"></i></a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://keybase.io/" target="_blank" rel="noopener" title="Chat on Keybase"><i class="fab fa-keybase" aria-hidden="true"></i></a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://discourse.gohugo.io" target="_blank" rel="noopener" title="Discuss on Forum"><i class="fas fa-comments" aria-hidden="true"></i></a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

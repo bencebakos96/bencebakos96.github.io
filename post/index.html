@@ -118,7 +118,7 @@
   <meta property="og:description" content="Cognitive Psychology Student"><meta property="og:image" content="http://bencebakos96.github.io/img/icon-192.png">
   <meta property="twitter:image" content="http://bencebakos96.github.io/img/icon-192.png"><meta property="og:locale" content="en-us">
   
-  <meta property="og:updated_time" content="2020-12-01T21:13:14-05:00">
+  <meta property="og:updated_time" content="2021-05-31T00:00:00&#43;00:00">
   
 
   
@@ -329,6 +329,90 @@
   
 
   
+  
+    
+    <div class="col-lg-4 col-md-6 mb-4">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="card-simple" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    
+    
+
+    <div class="card-body">
+    <h3 class="article-title mb-1 mt-0" itemprop="name">
+      <a href="/post/2021-05-31-covid-vs-mobility/" itemprop="url">Hungarian COVID-19 deaths vs. Google&#39;s mobility data</a>
+    </h3>
+    
+    
+
+
+
+<meta content="2021-05-31 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2021-05-31 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>May 31, 2021</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+
+  
+
+</div>
+
+    
+    
+    <div class="article-style" itemprop="articleBody">
+      Packageslibrary(tidyverse)library(gtable)library(grid)DataDocumentation for data:
+Google Mobility DataOur World in Data COVID-19 dataset# Downloading mobility data from Googledownload.file(url = &quot;https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip&quot;,destfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;)# Unzipping relevant filesunzip(zipfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;,files = &quot;2020_HU_Region_Mobility_Report.csv&quot;,exdir = &quot;Data&quot;)unzip(zipfile = &quot;Data/Region_Mobility_Report_CSVs.zip&quot;,files = &quot;2021_HU_Region_Mobility_Report.csv&quot;,exdir = &quot;Data&quot;)# Importing relevant filesmobility_hu_20 &lt;- read_csv(&quot;Data/2020_HU_Region_Mobility_Report.csv&quot;)mobility_hu_21 &lt;- read_csv(&quot;Data/2021_HU_Region_Mobility_Report.csv&quot;)# Downloading and importing COVID-19 data from Our World in Dataowd_covid_HU &lt;-read_csv(&quot;https://covid.
+    </div>
+    
+
+
+    
+  </div>
+</div>
+    </div>
+    
   
     
     <div class="col-lg-4 col-md-6 mb-4">
