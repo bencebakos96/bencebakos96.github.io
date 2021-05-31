@@ -7,59 +7,136 @@
     <generator>Source Themes academia (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;copy; {year}</copyright>
-    <lastBuildDate>Tue, 01 Dec 2020 21:13:14 -0500</lastBuildDate>
+    <lastBuildDate>Mon, 31 May 2021 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="http://bencebakos96.github.io/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>http://bencebakos96.github.io/post/2020-12-01-r-rmarkdown/</link>
-      <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
+      <title>Hungarian COVID-19 deaths vs. Google&#39;s mobility data</title>
+      <link>http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/</link>
+      <pubDate>Mon, 31 May 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://bencebakos96.github.io/post/2020-12-01-r-rmarkdown/</guid>
+      <guid>http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/</guid>
       <description>
-&lt;script src=&#34;http://bencebakos96.github.io/post/2020-12-01-r-rmarkdown/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
-&lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;R Markdown&lt;/h1&gt;
-&lt;p&gt;This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;a href=&#34;http://rmarkdown.rstudio.com&#34; class=&#34;uri&#34;&gt;http://rmarkdown.rstudio.com&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You can embed an R code chunk like this:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-fit &amp;lt;- lm(dist ~ speed, data = cars)
-fit
-## 
-## Call:
-## lm(formula = dist ~ speed, data = cars)
-## 
-## Coefficients:
-## (Intercept)        speed  
-##     -17.579        3.932&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;packages&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Packages&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+library(gtable)
+library(grid)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;div id=&#34;including-plots&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Including Plots&lt;/h1&gt;
-&lt;p&gt;You can also embed plots. See Figure &lt;a href=&#34;#fig:pie&#34;&gt;1&lt;/a&gt; for example:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c(&amp;#39;Sky&amp;#39;, &amp;#39;Sunny side of pyramid&amp;#39;, &amp;#39;Shady side of pyramid&amp;#39;),
-  col = c(&amp;#39;#0292D8&amp;#39;, &amp;#39;#F7EA39&amp;#39;, &amp;#39;#C4B632&amp;#39;),
-  init.angle = -50, border = NA
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:pie&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;http://bencebakos96.github.io/post/2020-12-01-r-rmarkdown/index.en_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
-&lt;p class=&#34;caption&#34;&gt;
-Figure 1: A fancy pie chart.
-&lt;/p&gt;
+&lt;div id=&#34;data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Data&lt;/h1&gt;
+&lt;p&gt;Documentation for data:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.google.com/covid19/mobility/data_documentation.html&#34;&gt;Google Mobility Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/owid/covid-19-data/tree/master/public/data&#34;&gt;Our World in Data COVID-19 dataset&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Downloading mobility data from Google
+download.file(url = &amp;quot;https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip&amp;quot;,
+              destfile = &amp;quot;Data/Region_Mobility_Report_CSVs.zip&amp;quot;)
+
+# Unzipping relevant files
+unzip(zipfile = &amp;quot;Data/Region_Mobility_Report_CSVs.zip&amp;quot;,
+      files = &amp;quot;2020_HU_Region_Mobility_Report.csv&amp;quot;,
+      exdir = &amp;quot;Data&amp;quot;)
+
+unzip(zipfile = &amp;quot;Data/Region_Mobility_Report_CSVs.zip&amp;quot;,
+      files = &amp;quot;2021_HU_Region_Mobility_Report.csv&amp;quot;,
+      exdir = &amp;quot;Data&amp;quot;)
+
+# Importing relevant files
+mobility_hu_20 &amp;lt;- read_csv(&amp;quot;Data/2020_HU_Region_Mobility_Report.csv&amp;quot;)
+mobility_hu_21 &amp;lt;- read_csv(&amp;quot;Data/2021_HU_Region_Mobility_Report.csv&amp;quot;)
+
+# Downloading and importing COVID-19 data from Our World in Data
+owd_covid_HU &amp;lt;-
+  read_csv(&amp;quot;https://covid.ourworldindata.org/data/owid-covid-data.csv&amp;quot;) %&amp;gt;% 
+  filter(iso_code == &amp;quot;HUN&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+&lt;div id=&#34;data-wrangling&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Data Wrangling&lt;/h1&gt;
+&lt;p&gt;Google’s mobility data is divided into separate files by year. Below I join the dataframes and create a separate DF for Hungary overall, and a DF with all subregions. Mobility data and COVID-19 data also need to be joined.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Joining dataframes
+mobility_hu &amp;lt;- bind_rows(mobility_hu_20, mobility_hu_21)
+
+# New dataframe for Hungary overall
+mobility_hu_OVR &amp;lt;-
+  mobility_hu %&amp;gt;% 
+  filter(is.na(sub_region_1) == TRUE) %&amp;gt;% 
+  select(date:last_col())
+
+# New dataframe for subregions of Hungary
+mobility_hu_sub &amp;lt;-
+  mobility_hu %&amp;gt;% 
+  filter(is.na(sub_region_1) == FALSE) %&amp;gt;% 
+  select(c(sub_region_1, iso_3166_2_code, date:last_col()))
+
+# Selecting relevant variables
+owd_covid_HU &amp;lt;-
+  owd_covid_HU %&amp;gt;% 
+  select(c(date, new_cases:new_deaths_smoothed_per_million,
+           people_vaccinated:new_vaccinations_smoothed,
+           people_fully_vaccinated_per_hundred:new_vaccinations_smoothed_per_million))
+
+# Joining mobility and COVID-19 data
+mobility_covid &amp;lt;- 
+  mobility_hu_OVR %&amp;gt;% 
+  left_join(owd_covid_HU, by = &amp;quot;date&amp;quot;)
+
+# Joining mobility and COVID-19 data for subregions
+mobility_covid_subregions &amp;lt;-
+  mobility_hu_sub %&amp;gt;% 
+  left_join(owd_covid_HU, by = &amp;quot;date&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-visualization&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Data visualization&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1 &amp;lt;-
+  ggplot(mobility_covid, aes(date, retail_and_recreation_percent_change_from_baseline))+
+    geom_line(color = &amp;quot;red&amp;quot;)+
+    geom_smooth(se = FALSE, color = &amp;quot;red&amp;quot;)+
+    ylab(&amp;quot;recreation change (%)&amp;quot;)
+
+p2 &amp;lt;-
+  ggplot(mobility_covid, aes(date, new_deaths_smoothed))+
+    geom_line(color = &amp;quot;blue&amp;quot;)+
+    ylab(&amp;quot;new COVID death (7 day av.)&amp;quot;)
+
+g1 &amp;lt;- ggplotGrob(p1)
+g2 &amp;lt;- ggplotGrob(p2)
+g &amp;lt;- rbind(g1, g2) # stack the two plots
+g$widths &amp;lt;- unit.pmax(g1$widths, g2$widths) # use the largest widths
+grid.newpage()
+grid.draw(g)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p3 &amp;lt;-
+  ggplot(mobility_covid, aes(date, parks_percent_change_from_baseline))+
+    geom_line(color = &amp;quot;green&amp;quot;)+
+    ylab(&amp;quot;parks change (%)&amp;quot;)
+
+g1 &amp;lt;- ggplotGrob(p3)
+g2 &amp;lt;- ggplotGrob(p2)
+g &amp;lt;- rbind(g1, g2) # stack the two plots
+g$widths &amp;lt;- unit.pmax(g1$widths, g2$widths) # use the largest widths
+grid.newpage()
+grid.draw(g)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p4 &amp;lt;-
+  ggplot(mobility_covid, aes(date, residential_percent_change_from_baseline))+
+    geom_line(color = &amp;quot;brown&amp;quot;)+
+  geom_smooth(se = FALSE, color = &amp;quot;black&amp;quot;)+
+    ylab(&amp;quot;residental change (%)&amp;quot;)
+
+g1 &amp;lt;- ggplotGrob(p4)
+g2 &amp;lt;- ggplotGrob(p2)
+g &amp;lt;- rbind(g1, g2) # stack the two plots
+g$widths &amp;lt;- unit.pmax(g1$widths, g2$widths) # use the largest widths
+grid.newpage()
+grid.draw(g)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 </description>
     </item>
