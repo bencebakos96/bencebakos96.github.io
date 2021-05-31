@@ -7,7 +7,6 @@
     <generator>Source Themes academia (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;copy; {year}</copyright>
-    <lastBuildDate>Mon, 31 May 2021 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="http://bencebakos96.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +14,7 @@
     <item>
       <title>R</title>
       <link>http://bencebakos96.github.io/categories/r/</link>
-      <pubDate>Mon, 31 May 2021 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://bencebakos96.github.io/categories/r/</guid>
       <description></description>

@@ -7,7 +7,6 @@
     <generator>Source Themes academia (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;copy; {year}</copyright>
-    <lastBuildDate>Mon, 31 May 2021 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="http://bencebakos96.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +14,7 @@
     <item>
       <title>Hungarian COVID-19 deaths vs. Google&#39;s mobility data</title>
       <link>http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/</link>
-      <pubDate>Mon, 31 May 2021 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/</guid>
       <description>
@@ -39,6 +38,7 @@ library(grid)&lt;/code&gt;&lt;/pre&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.google.com/covid19/mobility/data_documentation.html&#34;&gt;Google Mobility Data&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/owid/covid-19-data/tree/master/public/data&#34;&gt;Our World in Data COVID-19 dataset&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;Important to note that the baseline mobility was measured between January 3rd and Feburary 6th of 2020.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Downloading mobility data from Google
 download.file(url = &amp;quot;https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip&amp;quot;,
               destfile = &amp;quot;Data/Region_Mobility_Report_CSVs.zip&amp;quot;)
@@ -126,49 +126,64 @@ mobility_covid_subregions &amp;lt;-
 &lt;/div&gt;
 &lt;div id=&#34;data-visualization&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Data visualization&lt;/h1&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1 &amp;lt;-
-  ggplot(mobility_covid, aes(date, retail_and_recreation_percent_change_from_baseline))+
-    geom_line(color = &amp;quot;red&amp;quot;)+
-    geom_smooth(se = FALSE, color = &amp;quot;red&amp;quot;)+
-    ylab(&amp;quot;recreation change (%)&amp;quot;)
-
-p2 &amp;lt;-
+&lt;div id=&#34;retail-and-recreation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Retail and recreation&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;death &amp;lt;-
   ggplot(mobility_covid, aes(date, new_deaths_smoothed))+
-    geom_line(color = &amp;quot;blue&amp;quot;)+
-    ylab(&amp;quot;new COVID death (7 day av.)&amp;quot;)
+    geom_line(color = &amp;quot;black&amp;quot;)+
+    ylab(&amp;quot;new COVID deaths (7 day av.)&amp;quot;)+
+    theme_minimal()+
+    scale_x_date(date_breaks = &amp;quot;2 month&amp;quot;, date_labels = &amp;quot;%b/%g&amp;quot;)
+
+p1 &amp;lt;-
+  ggplot(mobility_covid, aes(date, retail_and_recreation_percent_change_from_baseline))+
+    geom_line(color = &amp;quot;red&amp;quot;, alpha = 0.5)+
+    geom_smooth(se = FALSE, color = &amp;quot;red&amp;quot;)+
+    ylab(&amp;quot;recreation change (%)&amp;quot;)+
+    coord_cartesian(ylim = c(-100,200))+
+    geom_hline(aes(yintercept = 0), alpha = 0.5)+
+    theme_minimal()+
+    scale_x_date(date_breaks = &amp;quot;2 month&amp;quot;, date_labels = &amp;quot;%b/%g&amp;quot;)+
+    labs(title = &amp;quot;Retail and recreation activity compared to COVID deaths&amp;quot;)
 
 g1 &amp;lt;- ggplotGrob(p1)
-g2 &amp;lt;- ggplotGrob(p2)
+g2 &amp;lt;- ggplotGrob(death)
 g &amp;lt;- rbind(g1, g2) # stack the two plots
 g$widths &amp;lt;- unit.pmax(g1$widths, g2$widths) # use the largest widths
 grid.newpage()
 grid.draw(g)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p3 &amp;lt;-
-  ggplot(mobility_covid, aes(date, parks_percent_change_from_baseline))+
-    geom_line(color = &amp;quot;green&amp;quot;)+
-    ylab(&amp;quot;parks change (%)&amp;quot;)
-
-g1 &amp;lt;- ggplotGrob(p3)
-g2 &amp;lt;- ggplotGrob(p2)
-g &amp;lt;- rbind(g1, g2) # stack the two plots
-g$widths &amp;lt;- unit.pmax(g1$widths, g2$widths) # use the largest widths
-grid.newpage()
-grid.draw(g)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p4 &amp;lt;-
-  ggplot(mobility_covid, aes(date, residential_percent_change_from_baseline))+
-    geom_line(color = &amp;quot;brown&amp;quot;)+
-  geom_smooth(se = FALSE, color = &amp;quot;black&amp;quot;)+
-    ylab(&amp;quot;residental change (%)&amp;quot;)
-
-g1 &amp;lt;- ggplotGrob(p4)
-g2 &amp;lt;- ggplotGrob(p2)
-g &amp;lt;- rbind(g1, g2) # stack the two plots
-g$widths &amp;lt;- unit.pmax(g1$widths, g2$widths) # use the largest widths
-grid.newpage()
-grid.draw(g)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz%20retail-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As we can see, people’s recreational and retail movements have significantly dipped during the winter and early spring months.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;parks&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Parks&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz%20parks-1.png&#34; width=&#34;672&#34; /&gt;
+Hungarians enjoyed an almost insanely free summer and it is backed up by the data. People spent more time in parks throughout the whole year, except in the winter.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;transit-stations&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Transit stations&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz%20transit-1.png&#34; width=&#34;672&#34; /&gt;
+As expected, public transportation companies took a big hit. We are getting closer to the baseline level, but people travelled much less during the entire period of COVID.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;workplaces&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Workplaces&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz%20work-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Workplace data seems similar to the transportation data. It seems that those who could work in home office are still working from home.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;residental-areas&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Residental areas&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz%20residential-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Surprisingly there were no big changes in the residential area mobility data. There can be a lot of explanations for this, e.g.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;people did not take the quarantine seriously,&lt;/li&gt;
+&lt;li&gt;measurements are not accurate enough,&lt;/li&gt;
+&lt;li&gt;the quarantine measures were not strict enough, etc.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusions&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Conclusions&lt;/h1&gt;
+&lt;p&gt;There doesn’t seem to be a huge relationship between mobility data and COVID deaths, but this short data visualization practice is not enough to confirm this just yet. Stay tuned for a newer version of this post and even more posts!&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
 &lt;hr /&gt;
