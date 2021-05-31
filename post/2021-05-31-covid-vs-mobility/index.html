@@ -42,7 +42,7 @@
   
   
   
-  <meta name="theme-color" content="#795548">
+  <meta name="theme-color" content="#3f51b5">
   
 
   
@@ -77,13 +77,13 @@
 
   
   
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Open+Sans|Roboto+Mono&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cutive+Mono|Lora:400,700|Roboto:400,700&display=swap">
   
 
   
   
   
-  <link rel="stylesheet" href="/css/academia.min.cff6145fe2dabd10bd75fe249f12263e.css">
+  <link rel="stylesheet" href="/css/academia.min.820a630a2e7d73f18916c9938b3769fd.css">
 
   
 
@@ -344,7 +344,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    2 min read
+    4 min read
   </span>
   
 
@@ -478,6 +478,10 @@
 <script src="http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/header-attrs/header-attrs.js"></script>
 
 
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this post I would like to explore if there is any relationship between the number of COVID-19 deaths in Hungary, and changes in Google’s mobility data. One would suspect the there may be a causal relationship between lockdowns and the number of deaths. Do people stay at home more if more people succumb to the disease?</p>
+</div>
 <div id="packages" class="section level1">
 <h1>Packages</h1>
 <pre class="r"><code>library(tidyverse)
@@ -547,6 +551,34 @@ mobility_covid &lt;-
 mobility_covid_subregions &lt;-
   mobility_hu_sub %&gt;% 
   left_join(owd_covid_HU, by = &quot;date&quot;)</code></pre>
+<p>Now we have some beautiful dataframes:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<pre class="r"><code>glimpse(mobility_covid)</code></pre>
+<pre><code>## Rows: 469
+## Columns: 24
+## $ date                                               &lt;date&gt; 2020-02-15, 2020-0~
+## $ retail_and_recreation_percent_change_from_baseline &lt;dbl&gt; 14, 20, 6, 5, 3, 4,~
+## $ grocery_and_pharmacy_percent_change_from_baseline  &lt;dbl&gt; 6, 10, 4, 4, 2, 2, ~
+## $ parks_percent_change_from_baseline                 &lt;dbl&gt; 46, 52, 25, 24, 16,~
+## $ transit_stations_percent_change_from_baseline      &lt;dbl&gt; 16, 18, 6, 5, 2, 4,~
+## $ workplaces_percent_change_from_baseline            &lt;dbl&gt; 4, 3, 3, 2, 2, 2, 1~
+## $ residential_percent_change_from_baseline           &lt;dbl&gt; -2, -2, 0, 0, -1, 0~
+## $ new_cases                                          &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ new_cases_smoothed                                 &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ total_deaths                                       &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ new_deaths                                         &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ new_deaths_smoothed                                &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ total_cases_per_million                            &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ new_cases_per_million                              &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ new_cases_smoothed_per_million                     &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ total_deaths_per_million                           &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ new_deaths_per_million                             &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ new_deaths_smoothed_per_million                    &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ people_vaccinated                                  &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ people_fully_vaccinated                            &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ new_vaccinations                                   &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ new_vaccinations_smoothed                          &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ people_fully_vaccinated_per_hundred                &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ new_vaccinations_smoothed_per_million              &lt;dbl&gt; NA, NA, NA, NA, NA,~</code></pre>
 </div>
 <div id="data-visualization" class="section level1">
 <h1>Data visualization</h1>
@@ -593,6 +625,12 @@ g$widths &lt;- unit.pmax(g1$widths, g2$widths) # use the largest widths
 grid.newpage()
 grid.draw(g)</code></pre>
 <p><img src="http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz-3.png" width="672" /></p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>We have a few days of NAs in the COVID data, as it did not appear until the 3rd of March 2020.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
     </div>

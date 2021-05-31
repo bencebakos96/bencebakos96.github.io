@@ -22,6 +22,10 @@
 &lt;script src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;In this post I would like to explore if there is any relationship between the number of COVID-19 deaths in Hungary, and changes in Google’s mobility data. One would suspect the there may be a causal relationship between lockdowns and the number of deaths. Do people stay at home more if more people succumb to the disease?&lt;/p&gt;
+&lt;/div&gt;
 &lt;div id=&#34;packages&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Packages&lt;/h1&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
@@ -91,6 +95,34 @@ mobility_covid &amp;lt;-
 mobility_covid_subregions &amp;lt;-
   mobility_hu_sub %&amp;gt;% 
   left_join(owd_covid_HU, by = &amp;quot;date&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have some beautiful dataframes:&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;glimpse(mobility_covid)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Rows: 469
+## Columns: 24
+## $ date                                               &amp;lt;date&amp;gt; 2020-02-15, 2020-0~
+## $ retail_and_recreation_percent_change_from_baseline &amp;lt;dbl&amp;gt; 14, 20, 6, 5, 3, 4,~
+## $ grocery_and_pharmacy_percent_change_from_baseline  &amp;lt;dbl&amp;gt; 6, 10, 4, 4, 2, 2, ~
+## $ parks_percent_change_from_baseline                 &amp;lt;dbl&amp;gt; 46, 52, 25, 24, 16,~
+## $ transit_stations_percent_change_from_baseline      &amp;lt;dbl&amp;gt; 16, 18, 6, 5, 2, 4,~
+## $ workplaces_percent_change_from_baseline            &amp;lt;dbl&amp;gt; 4, 3, 3, 2, 2, 2, 1~
+## $ residential_percent_change_from_baseline           &amp;lt;dbl&amp;gt; -2, -2, 0, 0, -1, 0~
+## $ new_cases                                          &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ new_cases_smoothed                                 &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ total_deaths                                       &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ new_deaths                                         &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ new_deaths_smoothed                                &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ total_cases_per_million                            &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ new_cases_per_million                              &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ new_cases_smoothed_per_million                     &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ total_deaths_per_million                           &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ new_deaths_per_million                             &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ new_deaths_smoothed_per_million                    &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ people_vaccinated                                  &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ people_fully_vaccinated                            &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ new_vaccinations                                   &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ new_vaccinations_smoothed                          &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ people_fully_vaccinated_per_hundred                &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ new_vaccinations_smoothed_per_million              &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;data-visualization&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Data visualization&lt;/h1&gt;
@@ -137,6 +169,12 @@ g$widths &amp;lt;- unit.pmax(g1$widths, g2$widths) # use the largest widths
 grid.newpage()
 grid.draw(g)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;http://bencebakos96.github.io/post/2021-05-31-covid-vs-mobility/index.en_files/figure-html/dataviz-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;We have a few days of NAs in the COVID data, as it did not appear until the 3rd of March 2020.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
 &lt;/div&gt;
 </description>
     </item>
