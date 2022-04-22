@@ -97,8 +97,8 @@ mobility_covid_subregions &amp;lt;-
   left_join(owd_covid_HU, by = &amp;quot;date&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now we have some beautiful dataframes:&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;glimpse(mobility_covid)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## Rows: 469
-## Columns: 24
+&lt;pre&gt;&lt;code&gt;## Rows: 686
+## Columns: 26
 ## $ date                                               &amp;lt;date&amp;gt; 2020-02-15, 2020-0~
 ## $ retail_and_recreation_percent_change_from_baseline &amp;lt;dbl&amp;gt; 14, 20, 6, 5, 3, 4,~
 ## $ grocery_and_pharmacy_percent_change_from_baseline  &amp;lt;dbl&amp;gt; 6, 10, 4, 4, 2, 2, ~
@@ -119,9 +119,11 @@ mobility_covid_subregions &amp;lt;-
 ## $ new_deaths_smoothed_per_million                    &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
 ## $ people_vaccinated                                  &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
 ## $ people_fully_vaccinated                            &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ total_boosters                                     &amp;lt;lgl&amp;gt; NA, NA, NA, NA, NA,~
 ## $ new_vaccinations                                   &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
 ## $ new_vaccinations_smoothed                          &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
 ## $ people_fully_vaccinated_per_hundred                &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~
+## $ total_boosters_per_hundred                         &amp;lt;lgl&amp;gt; NA, NA, NA, NA, NA,~
 ## $ new_vaccinations_smoothed_per_million              &amp;lt;dbl&amp;gt; NA, NA, NA, NA, NA,~&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;data-visualization&#34; class=&#34;section level1&#34;&gt;

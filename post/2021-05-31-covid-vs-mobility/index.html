@@ -524,8 +524,8 @@ mobility_covid_subregions &lt;-
   left_join(owd_covid_HU, by = &quot;date&quot;)</code></pre>
 <p>Now we have some beautiful dataframes:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <pre class="r"><code>glimpse(mobility_covid)</code></pre>
-<pre><code>## Rows: 469
-## Columns: 24
+<pre><code>## Rows: 686
+## Columns: 26
 ## $ date                                               &lt;date&gt; 2020-02-15, 2020-0~
 ## $ retail_and_recreation_percent_change_from_baseline &lt;dbl&gt; 14, 20, 6, 5, 3, 4,~
 ## $ grocery_and_pharmacy_percent_change_from_baseline  &lt;dbl&gt; 6, 10, 4, 4, 2, 2, ~
@@ -546,9 +546,11 @@ mobility_covid_subregions &lt;-
 ## $ new_deaths_smoothed_per_million                    &lt;dbl&gt; NA, NA, NA, NA, NA,~
 ## $ people_vaccinated                                  &lt;dbl&gt; NA, NA, NA, NA, NA,~
 ## $ people_fully_vaccinated                            &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ total_boosters                                     &lt;lgl&gt; NA, NA, NA, NA, NA,~
 ## $ new_vaccinations                                   &lt;dbl&gt; NA, NA, NA, NA, NA,~
 ## $ new_vaccinations_smoothed                          &lt;dbl&gt; NA, NA, NA, NA, NA,~
 ## $ people_fully_vaccinated_per_hundred                &lt;dbl&gt; NA, NA, NA, NA, NA,~
+## $ total_boosters_per_hundred                         &lt;lgl&gt; NA, NA, NA, NA, NA,~
 ## $ new_vaccinations_smoothed_per_million              &lt;dbl&gt; NA, NA, NA, NA, NA,~</code></pre>
 </div>
 <div id="data-visualization" class="section level1">
@@ -830,7 +832,7 @@ As expected, public transportation companies took a big hit. We are getting clos
       <div class="col-md-6 mb-4 mb-md-0">
         
         <p class="mb-0">
-          Copyright © 2021 &middot; 
+          Copyright © 2022 &middot; 
           Powered by
           <a href="https://gethugothemes.com" target="_blank" rel="noopener">Gethugothemes</a>
         </p>
